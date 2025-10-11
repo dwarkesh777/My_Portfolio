@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Portal by D S SAVALIYA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- <link rel="icon" href="https://www.google.com/imgres?q=radha%20krishna%20wallpaper&imgurl=https%3A%2F%2Fi.pinimg.com%2F736x%2Fa6%2F7d%2F05%2Fa67d05edf38a68c6e8f04a1877e7c151.jpg&imgrefurl=https%3A%2F%2Fwww.pinterest.com%2Fpin%2Fradhakrishna-flash-graphy-radhakrishna-flash-graphy-hd-phone-wallpaper--1140607043118805833%2F&docid=N7on_Rmn56XvRM&tbnid=dqBoVikth9SxDM&vet=12ahUKEwi3udOZuZGQAxVf7DgGHX2EHo0QM3oECBkQAA..i&w=736&h=1308&hcb=2&ved=2ahUKEwi3udOZuZGQAxVf7DgGHX2EHo0QM3oECBkQAA"> -->
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/175926715?s=400&u=3120031e9ae3b66e1814792ba36a5599a1d251bb&v=4" type="image/png">
+  
+   <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+
+        /* --- Loader Styles --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #111827; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .loader-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3b82f6; /* Blue */
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- General Styles --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        .btn {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- Test Mode Option Styles --- */
+        .option-btn {
+            background-color: white;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .option-btn.correct {
+            background-color: #22c55e !important;
+            border-color: #16a34a !important;
+            color: white !important;
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444 !important;
+            border-color: #dc2626 !important;
+            color: white !important;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    
+ <div id="loader">
+        <div class="loader-content">
+            <img src="https://avatars.githubusercontent.com/u/175926715?s=400&u=3120031e9ae3b66e1814792ba36a5599a1d251bb&v=4" 
+                 alt="Dwarkesh Profile Image" 
+                 class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-600"
+                 id="loader-image">
+            
+            <div class="loader-logo">Dwarkesh</div>
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+
+    <div class="main-container">    
+    <div class="main-container">
+
+        <div id="menu-screen">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-slate-900 mb-2">MCQ Portal</h1>
+                <p class="text-lg text-slate-600">Choose a mode to get started</p>
+            </header>
+            <div class="grid md:grid-cols-2 gap-8">
+                <button onclick="showScreen('view-mode')" class="btn bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-left">
+                    <h2 class="text-2xl font-semibold text-blue-600 mb-2">View PB MCQs</h2>
+                    <p class="text-slate-500">Practice mode. Review all questions with their options and correct answers revealed.</p>
+                </button>
+                <button onclick="showScreen('test-mode')" class="btn bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-left">
+                    <h2 class="text-2xl font-semibold text-green-600 mb-2">PB MCQ Test</h2>
+                    <p class="text-slate-500">Test your knowledge. Answer questions and get immediate feedback.</p>
+                </button>
+            </div>
+        </div>
+
+        <div id="view-mode-screen" class="hidden">
+             <header class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-900">Practice Questions</h1>
+                <button onclick="showScreen('menu')" class="btn bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md">Back to Menu</button>
+            </header>
+            <div id="view-questions-container" class="space-y-6">
+                </div>
+        </div>
+
+        <div id="test-mode-screen" class="hidden">
+            <header class="mb-8">
+                 <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-3xl font-bold text-slate-900">MCQ Test</h1>
+                    <button onclick="showScreen('menu')" class="btn bg-slate-200 text-slate-800 font-semibold py-2 px-5 rounded-lg">Exit Test</button>
+                 </div>
+                 <div class="w-full bg-slate-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progress-text" class="text-center text-sm text-slate-500 mt-2">Question 1/100</p>
+            </header>
+
+            <div id="test-card" class="bg-white p-8 rounded-2xl shadow-lg">
+                 </div>
+            
+            <div id="test-results" class="hidden text-center bg-white p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">Test Complete!</h2>
+                <p class="text-5xl font-bold text-blue-600 mb-6" id="score-text">10/100</p>
+                <div class="flex justify-center gap-4">
+                     <button onclick="startTest()" class="btn bg-blue-600 text-white font-bold py-3 px-6 rounded-lg">Restart Test</button>
+                     <button onclick="showScreen('menu')" class="btn bg-slate-600 text-white font-bold py-3 px-6 rounded-lg">Back to Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-0 left-0 w-full text-center py-4 text-sm text-slate-500 bg-slate-100">
+        Created by: D S SAVALIYA
+    </footer>
+
+    <script>
+               
+
+       // === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 1 to 12) ===
+const questions = [
+    {"No": "1", "question_text": "The given hexadecimal number (1E53)₁₆ is equivalent to", "MCQ Answer": "B", "option A": "(35.684)₈", "option B": "(34.340)₈", "option C": "(36.246)₈", "option D": "(35.599)₈"},
+    {"No": "2", "question_text": "The octal number (651.124)₈ is equivalent to", "MCQ Answer": "C", "option A": "(149.2A)₁₆", "option B": "(1A8.A3)₁₆", "option C": "(1A9.2A)₁₆", "option D": "(180.90)₁₆"},
+    {"No": "3", "question_text": "The octal equivalent of the decimal number (417)₁₀ is", "MCQ Answer": "A", "option A": "(641)₈", "option B": "(640)₈", "option C": "(619)₈", "option D": "(598)₈"},
+    {"No": "4", "question_text": "(170)₁₀ is equivalent to", "MCQ Answer": "D", "option A": "(FD)₁₆", "option B": "(AA)₁₆", "option C": "(DF)₁₆", "option D": "(AF)₁₆"},
+    {"No": "5", "question_text": "Convert (214)₈ into decimal", "MCQ Answer": "B", "option A": "(140)₁₀", "option B": "(142)₁₀", "option C": "(141)₁₀", "option D": "(130)₁₀"},
+    {"No": "6", "question_text": "Convert (0.345)₁₀ into an octal number.", "MCQ Answer": "A", "option A": "(0.26050)₈", "option B": "(0.19450)₈", "option C": "(0.260503)₈", "option D": "(0.24040)₈"},
+    {"No": "7", "question_text": "Convert decimal number (0.6875)₁₀ into a binary number.", "MCQ Answer": "B", "option A": "(0.1001)₂", "option B": "(0.1011)₂", "option C": "(0.1111)₂", "option D": "(0.1000)₂"},
+    {"No": "8", "question_text": "Convert decimal number (0.62)₁₀ into an octal number.", "MCQ Answer": "C", "option A": "(0.417)₈", "option B": "(0.473)₈", "option C": "(0.475)₈", "option D": "(0.415)₈"},
+    {"No": "9", "question_text": "Which of the following is not a positional number system?", "MCQ Answer": "A", "option A": "Roman Number System", "option B": "Octal Number System", "option C": "Binary Number System", "option D": "Hexadecimal Number System"},
+    {"No": "10", "question_text": "The value of radix in binary number system is", "MCQ Answer": "C", "option A": "4", "option B": "10", "option C": "2", "option D": "1101"},
+    {"No": "11", "question_text": "The binary equivalent of the decimal number 10 is", "MCQ Answer": "B", "option A": "10", "option B": "1010", "option C": "100", "option D": "1101"},
+    {"No": "12", "question_text": "The octal equivalent of 1100101.001010 is", "MCQ Answer": "B", "option A": "624.12", "option B": "145.12", "option C": "154.12", "option D": "145.21"},
+    // === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 17, 29, 36, 37, 45, 54-68, 71-75) ===
+    {"No": "17", "question_text": "The decimal equivalent of the binary number (10110.111)₂ is", "MCQ Answer": "B", "option A": "(22.875)₁₀", "option B": "(22.975)₁₀", "option C": "(22.999)₁₀", "option D": "(22.795)₁₀"},
+    {"No": "29", "question_text": "The number of bits in BCD code is", "MCQ Answer": "C", "option A": "3", "option B": "2", "option C": "4", "option D": "5"},
+    {"No": "36", "question_text": "Nibble means", "MCQ Answer": "C", "option A": "2 bit", "option B": "8 bit", "option C": "4 bit", "option D": "16 bit"},
+    {"No": "37", "question_text": "A byte is a string of", "MCQ Answer": "B", "option A": "16 bits", "option B": "8 bits", "option C": "6 bits", "option D": "4 bits"},
+    {"No": "45", "question_text": "Excess-3 code is a/an", "MCQ Answer": "B", "option A": "Binary code", "option B": "Self-complementary code", "option C": "Gray code", "option D": "Alphanumeric code"},
+    {"No": "54", "question_text": "The term 'digital' is derived from the word...", "MCQ Answer": "A", "option A": "Digit", "option B": "Dig", "option C": "Digt", "option D": "All of the above"},
+    {"No": "55", "question_text": "The base (or radix) of the hexadecimal system is", "MCQ Answer": "C", "option A": "10", "option B": "8", "option C": "16", "option D": "2"},
+    {"No": "56", "question_text": "Which of the following number is not allowed in radix-7 (base 7) system?", "MCQ Answer": "B", "option A": "1666", "option B": "739", "option C": "461", "option D": "124"},
+    {"No": "57", "question_text": "If (2.3)₄ + (1.2)₄ = y₄, then value of y in base 4 system.", "MCQ Answer": "A", "option A": "10.1", "option B": "10.01", "option C": "10.2", "option D": "1.02"},
+    {"No": "58", "question_text": "The 1's complement of the number (1001010)₂ is", "MCQ Answer": "A", "option A": "0110101", "option B": "0010010", "option C": "1001010", "option D": "1001011"},
+    {"No": "59", "question_text": "The 2's complement of the number (1001010)₂ is", "MCQ Answer": "B", "option A": "0110101", "option B": "0110110", "option C": "1001010", "option D": "1001011"},
+    {"No": "60", "question_text": "Which number system has a base 16?", "MCQ Answer": "D", "option A": "Octal", "option B": "Decimal", "option C": "Binary", "option D": "Hexadecimal"},
+    {"No": "61", "question_text": "What is Digital Electronics?", "MCQ Answer": "D", "option A": "Engineering of devices that produce digital signal", "option B": "Field of electronics involving the study of digital signal", "option C": "Engineering of devices that accepts digital signals", "option D": "All of the mentioned"},
+    {"No": "62", "question_text": "Convert the following numbers as directed: (130)₁₀ to (?)₂", "MCQ Answer": "B", "option A": "(10000011)₂", "option B": "(10000010)₂", "option C": "(10000111)₂", "option D": "(111001)₂"},
+    {"No": "63", "question_text": "Convert the following numbers as directed: (1011011)₂ to (?)₁₀", "MCQ Answer": "D", "option A": "(91)₈", "option B": "(52)₁₀", "option C": "(41)₁₀", "option D": "(91)₁₀"},
+    {"No": "64", "question_text": "Convert the following numbers as directed: (10111)₂ to (?)₈", "MCQ Answer": "C", "option A": "(26)₈", "option B": "(25)₈", "option C": "(27)₈", "option D": "(29)₈"},
+    {"No": "65", "question_text": "Convert the following numbers as directed: (57)₁₆ to (?)₂", "MCQ Answer": "A", "option A": "(01010111)₂", "option B": "(10001111)₂", "option C": "(11100111)₂", "option D": "(00101111)₂"},
+    {"No": "66", "question_text": "Convert decimal number (43)₁₀ to binary.", "MCQ Answer": "C", "option A": "(110110)₂", "option B": "(1010101)₂", "option C": "(101011)₂", "option D": "(111001)₂"},
+    {"No": "67", "question_text": "Convert octal number (234)₈ to hexadecimal.", "MCQ Answer": "A", "option A": "(9C)₁₆", "option B": "(8C)₁₆", "option C": "(9C)₈", "option D": "(9C)₂"},
+    {"No": "68", "question_text": "Convert decimal number (0.252)₁₀ to binary.", "MCQ Answer": "B", "option A": "(0.00001)₂", "option B": "(0.010000)₂", "option C": "(1.010000)₂", "option D": "(10.00100)₂"},
+    {"No": "71", "question_text": "Find 2's complement of 10000100.", "MCQ Answer": "B", "option A": "01111011", "option B": "01111100", "option C": "01110100", "option D": "01010101"},
+    {"No": "72", "question_text": "Find 1's complement of 11100101.", "MCQ Answer": "B", "option A": "00011001", "option B": "00011010", "option C": "00011011", "option D": "00011000"},
+    {"No": "73", "question_text": "The complement of 1010 is", "MCQ Answer": "C", "option A": "1001", "option B": "1010", "option C": "0101", "option D": "1101"},
+    {"No": "74", "question_text": "Convert the decimal fraction 0.4375 to binary.", "MCQ Answer": "A", "option A": "0.0111", "option B": "0.1011", "option C": "0.1101", "option D": "0.1111"},
+    {"No": "75", "question_text": "How many bits are in a byte?", "MCQ Answer": "A", "option A": "8", "option B": "16", "option C": "4", "option D": "1"},
+    // === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 77-82, 85, 104, 105, 117-128, 131, 146-156, 163, 169, 172-178) ===
+    {"No": "77", "question_text": "The 1's complement of the number (0111)₂ is", "MCQ Answer": "B", "option A": "1110", "option B": "1000", "option C": "1100", "option D": "0001"},
+    {"No": "78", "question_text": "The 2's complement of the number (1001)₂ is", "MCQ Answer": "D", "option A": "0110", "option B": "0111", "option C": "1001", "option D": "0111"},
+    {"No": "79", "question_text": "The 1's complement of the number (1101)₂ is", "MCQ Answer": "A", "option A": "0010", "option B": "0001", "option C": "1101", "option D": "1010"},
+    {"No": "80", "question_text": "Which of the following is the 2's complement of (10111000)₂?", "MCQ Answer": "A", "option A": "01001000", "option B": "01000111", "option C": "10111001", "option D": "10110111"},
+    {"No": "81", "question_text": "The minimum number of bits required to represent the octal number (157)₈ in binary is", "MCQ Answer": "C", "option A": "7", "option B": "8", "option C": "9", "option D": "10"},
+    {"No": "82", "question_text": "A logic circuit that converts binary data to its complement is a/an", "MCQ Answer": "A", "option A": "Inverter", "option B": "Subtractor", "option C": "Adder", "option D": "Transistor"},
+    {"No": "85", "question_text": "The smallest unit of storage is a", "MCQ Answer": "B", "option A": "Nibble", "option B": "Bit", "option C": "Byte", "option D": "Word"},
+    {"No": "104", "question_text": "The minimum number of two-input NAND gates required to implement the function F = (X' + Y')(Z + W) is", "MCQ Answer": "C", "option A": "3", "option B": "4", "option C": "5", "option D": "6"},
+    {"No": "105", "question_text": "The minimum number of two-input NOR gates required to implement the function F = (X + Y) * (Z + W) is", "MCQ Answer": "C", "option A": "3", "option B": "4", "option C": "5", "option D": "6"},
+    {"No": "117", "question_text": "Which gate is equivalent to bubbled OR gate?", "MCQ Answer": "D", "option A": "AND", "option B": "XOR", "option C": "NOT", "option D": "NAND"},
+    {"No": "118", "question_text": "A NOT gate has...", "MCQ Answer": "A", "option A": "1 input and 1 output", "option B": "2 input 1 output", "option C": "1 input 2 output", "option D": "None of above"},
+    {"No": "119", "question_text": "The only function of a NOT gate is to", "MCQ Answer": "A", "option A": "Invert the input", "option B": "Stop the signal", "option C": "Act as a buffer", "option D": "Act as a switch"},
+    {"No": "120", "question_text": "The output of an OR gate is LOW when", "MCQ Answer": "C", "option A": "Any input is LOW", "option B": "Any input is HIGH", "option C": "All inputs are LOW", "option D": "All inputs are HIGH"},
+    {"No": "121", "question_text": "The output of a NAND gate is HIGH if", "MCQ Answer": "A", "option A": "Any input is LOW", "option B": "All inputs are HIGH", "option C": "All inputs are LOW", "option D": "Only one input is HIGH"},
+    {"No": "122", "question_text": "The output of a gate is only 1 when all of its inputs are 1.", "MCQ Answer": "C", "option A": "OR", "option B": "NOT", "option C": "AND", "option D": "EXOR"},
+    {"No": "123", "question_text": "The inputs of a NAND gate are connected together. The resulting circuit is", "MCQ Answer": "C", "option A": "OR", "option B": "AND", "option C": "NOT", "option D": "NONE OF ABOVE"},
+    {"No": "124", "question_text": "The NOR gate is OR gate followed by", "MCQ Answer": "C", "option A": "AND", "option B": "NAND", "option C": "NOT", "option D": "NONE OF ABOVE"},
+    {"No": "125", "question_text": "The NAND gate is AND gate followed by", "MCQ Answer": "A", "option A": "NOT", "option B": "OR", "option C": "NOR", "option D": "NONE OF ABOVE"},
+    {"No": "126", "question_text": "Which basic gate is used to construct a NOT gate?", "MCQ Answer": "A", "option A": "NAND, NOR", "option B": "AND, OR", "option C": "XOR, XNOR", "option D": "All of the above"},
+    {"No": "127", "question_text": "The basic logic gate whose output is the complement of the input is", "MCQ Answer": "C", "option A": "OR", "option B": "AND", "option C": "INVERTER", "option D": "NONE OF ABOVE"},
+    {"No": "128", "question_text": "The universal gate is", "MCQ Answer": "D", "option A": "EXOR", "option B": "NAND", "option C": "NOR", "option D": "BOTH (B) AND (C)"},
+    {"No": "131", "question_text": "A signal passing through a gate is inhibited by sending a LOW into one of the inputs, and the output is HIGH, the gate is a(n):", "MCQ Answer": "D", "option A": "AND", "option B": "NAND", "option C": "OR", "option D": "NOR"},
+    {"No": "146", "question_text": "A logic gate which has a HIGH output only when all its inputs are HIGH is a/an", "MCQ Answer": "B", "option A": "OR gate", "option B": "AND gate", "option C": "NOR gate", "option D": "XOR gate"},
+    {"No": "147", "question_text": "Which gate is called an inverter?", "MCQ Answer": "C", "option A": "AND", "option B": "OR", "option C": "NOT", "option D": "XOR"},
+    {"No": "148", "question_text": "Which of the following is an example of a universal gate?", "MCQ Answer": "C", "option A": "XOR", "option B": "OR", "option C": "NAND", "option D": "AND"},
+    {"No": "149", "question_text": "The AND function can be realised by NOR gates.", "MCQ Answer": "A", "option A": "Two", "option B": "Three", "option C": "Four", "option D": "Five"},
+    {"No": "150", "question_text": "The minimum number of two-input NAND gates required to implement a two-input EX-OR gate is", "MCQ Answer": "C", "option A": "4", "option B": "5", "option C": "3", "option D": "2"},
+    {"No": "151", "question_text": "The logic function F = A'B + AB' is the logic function of", "MCQ Answer": "D", "option A": "X-NOR gate", "option B": "OR gate", "option C": "AND gate", "option D": "X-OR gate"},
+    {"No": "152", "question_text": "The number of two-input NAND gates required to implement a two-input XOR gate is", "MCQ Answer": "B", "option A": "2", "option B": "4", "option C": "5", "option D": "6"},
+    {"No": "153", "question_text": "Which of the following Boolean expressions is incorrect?", "MCQ Answer": "B", "option A": "A' + A = 1", "option B": "A + B = A.B", "option C": "A + A = A", "option D": "A.A' = 0"},
+    {"No": "154", "question_text": "How many NOT gates are required to implement a half adder circuit?", "MCQ Answer": "A", "option A": "1", "option B": "2", "option C": "3", "option D": "4"},
+    {"No": "155", "question_text": "De Morgan's theorem states that", "MCQ Answer": "B", "option A": "(A + B)' = A' + B'", "option B": "(A + B)' = A' . B'", "option C": "(A . B)' = A' . B'", "option D": "(A . B)' = A . B"},
+    {"No": "156", "question_text": "The expression for an OR gate is", "MCQ Answer": "A", "option A": "Y = A + B", "option B": "Y = A . B", "option C": "Y = A' + B'", "option D": "Y = (A + B)'"},
+    {"No": "163", "question_text": "The Boolean expression Y = AB + BC + CA is minimized to", "MCQ Answer": "D", "option A": "AB + AC", "option B": "A'B + BC", "option C": "A'B + C", "option D": "No minimization possible"},
+    {"No": "169", "question_text": "The consensus theorem is represented as", "MCQ Answer": "C", "option A": "XY + XZ + Y'Z = XY + XZ", "option B": "XY + XZ + YZ = XY + XZ", "option C": "XY + X'Z + YZ = XY + X'Z", "option D": "XY + X'Z + YZ = X'Y + XZ"},
+    {"No": "172", "question_text": "The minimum number of two-input NAND gates required to implement a two-input OR gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "173", "question_text": "The minimum number of two-input NOR gates required to implement a two-input AND gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "174", "question_text": "Which one is not a property of Boolean algebra?", "MCQ Answer": "D", "option A": "Associative law", "option B": "Distributive law", "option C": "Commutative law", "option D": "Probability law"},
+    {"No": "175", "question_text": "Boolean algebra is also known as", "MCQ Answer": "B", "option A": "Decimal logic", "option B": "Binary logic", "option C": "Digital logic", "option D": "None of the above"},
+    {"No": "176", "question_text": "According to the idempotent law of Boolean algebra", "MCQ Answer": "A", "option A": "A + A = A", "option B": "A + A = 1", "option C": "A + A = A'", "option D": "A + A = 0"},
+    {"No": "177", "question_text": "Which of the following is true according to the Annulment law?", "MCQ Answer": "B", "option A": "A + 1 = 1", "option B": "A . 0 = 0", "option C": "A . 1 = 1", "option D": "A + 0 = 0"},
+    {"No": "178", "question_text": "According to the Absorption law, A + AB is equal to", "MCQ Answer": "A", "option A": "A", "option B": "B", "option C": "AB", "option D": "A + B"},
+// === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 180-183, 185, 186, 191-199) ===
+    {"No": "180", "question_text": "If two Boolean variables A and B are ORed, the result is 1, so the combination of the values of A and B can be", "MCQ Answer": "D", "option A": "A=0, B=0", "option B": "A=0, B=1", "option C": "A=1, B=0", "option D": "Any of B or C"},
+    {"No": "181", "question_text": "According to the property of 0, A + 0 is equal to", "MCQ Answer": "A", "option A": "A", "option B": "0", "option C": "1", "option D": "A'"},
+    {"No": "182", "question_text": "The minimum number of two-input NAND gates required to implement a two-input NOR gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "183", "question_text": "The minimum number of two-input NOR gates required to implement a two-input OR gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "185", "question_text": "Commutative law is", "MCQ Answer": "D", "option A": "A + A = A", "option B": "A + 1 = 1", "option C": "A + B = A", "option D": "A + B = B + A"},
+    {"No": "186", "question_text": "Associative law is", "MCQ Answer": "A", "option A": "A + (B + C) = (A + B) + C", "option B": "A + A = A", "option C": "A + 1 = 1", "option D": "A + 0 = A"},
+    {"No": "191", "question_text": "A full adder circuit adds", "MCQ Answer": "C", "option A": "One bit", "option B": "Two bits", "option C": "Three bits", "option D": "Four bits"},
+    {"No": "192", "question_text": "The output of a half-adder is:", "MCQ Answer": "A", "option A": "Sum and Carry", "option B": "Sum and Difference", "option C": "Carry and Difference", "option D": "None of the above"},
+    {"No": "193", "question_text": "A full-adder circuit has", "MCQ Answer": "C", "option A": "One input and one output", "option B": "Two inputs and one output", "option C": "Three inputs and two outputs", "option D": "Three inputs and one output"},
+    {"No": "194", "question_text": "Which gates are generally used to construct a half adder?", "MCQ Answer": "D", "option A": "AND, OR", "option B": "NAND, NOR", "option C": "NOT, AND", "option D": "EX-OR, AND"},
+    {"No": "195", "question_text": "The output of a full adder circuit is:", "MCQ Answer": "A", "option A": "Sum and Carry", "option B": "Sum and Difference", "option C": "Carry and Difference", "option D": "None of the above"},
+    {"No": "196", "question_text": "The output of a half-subtractor is:", "MCQ Answer": "B", "option A": "Sum and Carry", "option B": "Difference and Borrow", "option C": "Carry and Borrow", "option D": "None of the above"},
+    {"No": "197", "question_text": "The half-subtractor has", "MCQ Answer": "A", "option A": "Two inputs and two outputs", "option B": "Three inputs and two outputs", "option C": "One input and one output", "option D": "Two inputs and three outputs"},
+    {"No": "198", "question_text": "The full-subtractor has", "MCQ Answer": "B", "option A": "Two inputs and two outputs", "option B": "Three inputs and two outputs", "option C": "One input and one output", "option D": "Two inputs and three outputs"},
+    {"No": "199", "question_text": "Which gates are generally used to construct a half-subtractor?", "MCQ Answer": "C", "option A": "AND, OR", "option B": "NAND, NOR", "option C": "EX-OR, NOT, AND", "option D": "None of the above"},
+// === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 203 to 228) ===
+    {"No": "203", "question_text": "A full adder can be constructed by using", "MCQ Answer": "A", "option A": "Two half adders and one OR gate", "option B": "Two full adders", "option C": "Two half adders and one AND gate", "option D": "One half adder and one OR gate"},
+    {"No": "204", "question_text": "A full-subtractor is constructed by using", "MCQ Answer": "B", "option A": "One half subtractor and one AND gate", "option B": "Two half subtractors and one OR gate", "option C": "Two half subtractors and one NOT gate", "option D": "None of the above"},
+    {"No": "205", "question_text": "The carry generated in a full adder circuit is", "MCQ Answer": "C", "option A": "C_in", "option B": "A XOR B", "option C": "AB + BC_in + CA", "option D": "A + B + C_in"},
+    {"No": "206", "question_text": "The sum generated in a full adder circuit is", "MCQ Answer": "D", "option A": "A + B + C", "option B": "A AND B AND C", "option C": "A XOR B", "option D": "A XOR B XOR C"},
+    {"No": "207", "question_text": "A decoder has 'n' inputs and 'm' outputs. If the decoder is designed to work as a min-term generator, then", "MCQ Answer": "D", "option A": "m = n", "option B": "m = 2n", "option C": "m = 2n-1", "option D": "m = 2^n"},
+    {"No": "208", "question_text": "A full adder logic can be realized using", "MCQ Answer": "B", "option A": "Three AND gates and two OR gates", "option B": "Two half adders and one OR gate", "option C": "Two full adders", "option D": "None of the above"},
+    {"No": "209", "question_text": "A 4-to-16 line decoder will have", "MCQ Answer": "C", "option A": "16 inputs and 4 outputs", "option B": "4 outputs and 4 inputs", "option C": "4 inputs and 16 outputs", "option D": "16 inputs and 16 outputs"},
+    {"No": "210", "question_text": "The output lines of a decoder are called", "MCQ Answer": "A", "option A": "Minterms", "option B": "Maxterms", "option C": "Output terms", "option D": "Address terms"},
+    {"No": "211", "question_text": "A multiplexer has", "MCQ Answer": "B", "option A": "One data input and one output", "option B": "Many data inputs and one output", "option C": "Many data inputs and many outputs", "option D": "One data input and many outputs"},
+    {"No": "212", "question_text": "A multiplexer is also called as", "MCQ Answer": "A", "option A": "Data selector", "option B": "Data distributor", "option C": "Encoder", "option D": "Decoder"},
+    {"No": "213", "question_text": "A demultiplexer has", "MCQ Answer": "A", "option A": "One data input and many outputs", "option B": "Many data inputs and one output", "option C": "Many data inputs and many outputs", "option D": "One data input and one output"},
+    {"No": "214", "question_text": "A demultiplexer is also called as", "MCQ Answer": "D", "option A": "Data selector", "option B": "Encoder", "option C": "Multiplexer", "option D": "Data distributor"},
+    {"No": "215", "question_text": "A 4-to-1 multiplexer has", "MCQ Answer": "C", "option A": "4 data inputs, 4 select lines and 1 output", "option B": "4 data inputs, 2 select lines and 2 outputs", "option C": "4 data inputs, 2 select lines and 1 output", "option D": "4 data inputs, 1 select line and 1 output"},
+    {"No": "216", "question_text": "A 1-to-8 demultiplexer has", "MCQ Answer": "B", "option A": "1 data input, 8 select lines and 8 outputs", "option B": "1 data input, 3 select lines and 8 outputs", "option C": "8 data inputs, 3 select lines and 1 output", "option D": "3 data inputs, 8 select lines and 1 output"},
+    {"No": "217", "question_text": "The term used to describe a multiplexer in short is", "MCQ Answer": "A", "option A": "MUX", "option B": "DMUX", "option C": "DECODE", "option D": "DATA SELECTOR"},
+    {"No": "218", "question_text": "The term used to describe a demultiplexer in short is", "MCQ Answer": "B", "option A": "MUX", "option B": "DMUX", "option C": "ENCODE", "option D": "DATA SELECTOR"},
+    {"No": "219", "question_text": "A combinational circuit that converts binary information from 'n' input lines to a maximum of 2^n unique output lines is a/an", "MCQ Answer": "B", "option A": "Encoder", "option B": "Decoder", "option C": "Multiplexer", "option D": "Demultiplexer"},
+    {"No": "220", "question_text": "An encoder has", "MCQ Answer": "D", "option A": "2^n inputs and n outputs", "option B": "n inputs and 2^n outputs", "option C": "n inputs and n outputs", "option D": "2^n outputs and n inputs"},
+    {"No": "221", "question_text": "An 8-to-3 encoder has", "MCQ Answer": "A", "option A": "8 inputs and 3 outputs", "option B": "3 inputs and 8 outputs", "option C": "8 inputs and 8 outputs", "option D": "3 inputs and 3 outputs"},
+    {"No": "222", "question_text": "A binary encoder is a combinational circuit that converts binary information from", "MCQ Answer": "A", "option A": "2^n input lines to n output lines", "option B": "n input lines to 2^n output lines", "option C": "2^n output lines to n input lines", "option D": "n output lines to 2^n input lines"},
+    {"No": "223", "question_text": "A priority encoder is used to encode a number based on the", "MCQ Answer": "B", "option A": "Lowest input line", "option B": "Highest input line", "option C": "Middle input line", "option D": "Random input line"},
+    {"No": "224", "question_text": "A 4-to-2 encoder has", "MCQ Answer": "A", "option A": "4 inputs and 2 outputs", "option B": "2 inputs and 4 outputs", "option C": "4 inputs and 4 outputs", "option D": "2 inputs and 2 outputs"},
+    {"No": "225", "question_text": "A BCD-to-seven segment decoder is a combinational circuit that converts the BCD input code to an output code for driving a", "MCQ Answer": "C", "option A": "Full adder", "option B": "Multiplexer", "option C": "Seven-segment display", "option D": "Flip flop"},
+    {"No": "226", "question_text": "A BCD-to-seven segment decoder has", "MCQ Answer": "A", "option A": "4 inputs and 7 outputs", "option B": "7 inputs and 4 outputs", "option C": "4 inputs and 4 outputs", "option D": "7 inputs and 7 outputs"},
+    {"No": "227", "question_text": "A binary-to-Gray code converter is a type of", "MCQ Answer": "B", "option A": "Encoder", "option B": "Combinational circuit", "option C": "Sequential circuit", "option D": "Flip-flop"},
+    {"No": "228", "question_text": "A Gray-to-binary code converter is a type of", "MCQ Answer": "A", "option A": "Combinational circuit", "option B": "Sequential circuit", "option C": "Encoder", "option D": "Decoder"},
+// === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 236 to 249) ===
+
+    {"No": "236", "question_text": "A sequential circuit that transmits data from a number of input lines to a single output line is a", "MCQ Answer": "D", "option A": "Decoder", "option B": "Encoder", "option C": "Demultiplexer", "option D": "Multiplexer"},
+    {"No": "237", "question_text": "A combinational circuit that converts binary data from a single input line to a number of output lines is a", "MCQ Answer": "C", "option A": "Multiplexer", "option B": "Encoder", "option C": "Demultiplexer", "option D": "Decoder"},
+    {"No": "238", "question_text": "How many select lines are required for a 16-to-1 multiplexer?", "MCQ Answer": "B", "option A": "2", "option B": "4", "option C": "8", "option D": "16"},
+    {"No": "239", "question_text": "How many outputs are required for a 2-to-4 decoder?", "MCQ Answer": "C", "option A": "2", "option B": "3", "option C": "4", "option D": "6"},
+    {"No": "240", "question_text": "How many input lines does an 8-to-3 encoder have?", "MCQ Answer": "A", "option A": "8", "option B": "3", "option C": "5", "option D": "11"},
+    {"No": "241", "question_text": "A sequential circuit uses an internal memory element called a", "MCQ Answer": "C", "option A": "Resistor", "option B": "Capacitor", "option C": "Flip-flop", "option D": "Transistor"},
+    {"No": "242", "question_text": "The basic building blocks of a sequential circuit are", "MCQ Answer": "D", "option A": "Logic gates", "option B": "Decoders", "option C": "Encoders", "option D": "Flip-flops"},
+    {"No": "243", "question_text": "Which memory element is known as a basic storage element?", "MCQ Answer": "B", "option A": "Capacitor", "option B": "Latch", "option C": "Resistor", "option D": "Diode"},
+    {"No": "244", "question_text": "Which flip-flop is not commonly used?", "MCQ Answer": "B", "option A": "D flip-flop", "option B": "T flip-flop", "option C": "JK flip-flop", "option D": "SR flip-flop"},
+    {"No": "245", "question_text": "The clock pulse is applied to the flip-flop to activate the", "MCQ Answer": "B", "option A": "Input", "option B": "Trigger", "option C": "Output", "option D": "Reset"},
+    {"No": "246", "question_text": "The memory capacity of an S-R flip-flop is", "MCQ Answer": "A", "option A": "1-bit", "option B": "2-bit", "option C": "3-bit", "option D": "4-bit"},
+    {"No": "247", "question_text": "The characteristic equation of an S-R flip-flop is", "MCQ Answer": "A", "option A": "Q(n+1) = S + R'Q(n)", "option B": "Q(n+1) = R + S'Q(n)", "option C": "Q(n+1) = S + R'Q(n)'", "option D": "Q(n+1) = R + S'Q(n)'"},
+    {"No": "248", "question_text": "The characteristic equation of a J-K flip-flop is", "MCQ Answer": "B", "option A": "Q(n+1) = J'Q(n) + KQ(n)", "option B": "Q(n+1) = JQ(n)' + K'Q(n)", "option C": "Q(n+1) = J'Q(n) + K'Q(n)", "option D": "Q(n+1) = JQ(n) + K'Q(n)"},
+    {"No": "249", "question_text": "The characteristic equation of a T flip-flop is", "MCQ Answer": "C", "option A": "Q(n+1) = T'Q(n)", "option B": "Q(n+1) = T'Q(n) + T'Q(n)'", "option C": "Q(n+1) = TQ(n)' + T'Q(n)", "option D": "Q(n+1) = TQ(n)"},
+// ===================================
+// === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 262, 273, 277-279, 282-285, 303, 306-309, 311-312, 315-322, 324, 327-328) ===
+
+    {"No": "262", "question_text": "Which register is capable of performing both left and right shift operations?", "MCQ Answer": "C", "option A": "Parallel-in, Parallel-out", "option B": "Serial-in, Serial-out", "option C": "Bidirectional shift register", "option D": "Universal shift register"},
+    {"No": "273", "question_text": "A counter in which all the flip-flops are connected in a series is called a/an", "MCQ Answer": "A", "option A": "Ripple counter", "option B": "Synchronous counter", "option C": "Decade counter", "option D": "Ring counter"},
+    {"No": "277", "question_text": "In a ripple counter, the clock is applied to the", "MCQ Answer": "B", "option A": "First flip-flop only", "option B": "All flip-flops simultaneously", "option C": "Second flip-flop only", "option D": "Last flip-flop only"},
+    {"No": "278", "question_text": "Which counter has the fastest operation?", "MCQ Answer": "B", "option A": "Ripple counter", "option B": "Synchronous counter", "option C": "Asynchronous counter", "option D": "Twisted ring counter"},
+    {"No": "279", "question_text": "A MOD-10 counter is also known as a", "MCQ Answer": "C", "option A": "Binary counter", "option B": "Up counter", "option C": "Decade counter", "option D": "Ring counter"},
+    {"No": "282", "question_text": "Which memory element is used in the shift register?", "MCQ Answer": "D", "option A": "SR flip-flop", "option B": "NOR gate", "option C": "OR gate", "option D": "D flip-flop"},
+    {"No": "283", "question_text": "The minimum number of flip-flops required to construct a MOD-10 counter is", "MCQ Answer": "B", "option A": "3", "option B": "4", "option C": "5", "option D": "10"},
+    {"No": "284", "question_text": "The maximum number of states in an n-bit counter is", "MCQ Answer": "C", "option A": "n", "option B": "n²", "option C": "2^n", "option D": "2n"},
+    {"No": "285", "question_text": "Which counter is also known as a full-modulus counter?", "MCQ Answer": "D", "option A": "Ring counter", "option B": "Decade counter", "option C": "Ripple counter", "option D": "Binary counter"},
+    {"No": "303", "question_text": "The minimum number of two-input NAND gates required to implement a two-input XOR gate is", "MCQ Answer": "C", "option A": "2", "option B": "5", "option C": "4", "option D": "3"},
+    {"No": "306", "question_text": "In a 3-variable K-map, the number of cells is", "MCQ Answer": "B", "option A": "6", "option B": "8", "option C": "9", "option D": "4"},
+    {"No": "307", "question_text": "In a 4-variable K-map, the number of cells is", "MCQ Answer": "D", "option A": "12", "option B": "8", "option C": "9", "option D": "16"},
+    {"No": "308", "question_text": "In K-map, groups can be formed in", "MCQ Answer": "A", "option A": "2, 4, 8, 16", "option B": "2, 3, 4, 5", "option C": "3, 5, 7", "option D": "2, 4, 6, 8"},
+    {"No": "309", "question_text": "In K-map, the group formed by eight adjacent cells is called a/an", "MCQ Answer": "C", "option A": "Pair", "option B": "Quad", "option C": "Octet", "option D": "Duo"},
+    {"No": "311", "question_text": "Which method is used for simplifying Boolean expressions?", "MCQ Answer": "D", "option A": "Boolean algebra", "option B": "K-map", "option C": "Quine McClusky method", "option D": "All of the above"},
+    {"No": "312", "question_text": "An inverter performs a/an", "MCQ Answer": "A", "option A": "Complementation operation", "option B": "Addition operation", "option C": "Multiplication operation", "option D": "Subtraction operation"},
+    {"No": "315", "question_text": "Which statement is correct for a K-map?", "MCQ Answer": "A", "option A": "Adjacent cells differ by only one variable", "option B": "Adjacent cells differ by two or more variables", "option C": "Groups can be formed only vertically", "option D": "Groups can be formed only horizontally"},
+    {"No": "316", "question_text": "Choose correct statement's from following: i) an inverter performs complementation operation ii) process performed by inverter is known as inversion iii) an inverter contains two or more input terminal and one output terminal.", "MCQ Answer": "A", "option A": "Only I & II", "option B": "Only I & III", "option C": "Only II & III", "option D": "All of the above"},
+    {"No": "317", "question_text": "If the boolean expression PQ + QR + PR is minimized, the expression becomes", "MCQ Answer": "B", "option A": "PQ + QR", "option B": "PQ + PR", "option C": "QR + PR", "option D": "P'Q + QR + PR"},
+    {"No": "318", "question_text": "A + AB = A (A + B) = A represents which law?", "MCQ Answer": "B", "option A": "Commutative", "option B": "Absorption", "option C": "Consensus", "option D": "Transposition"},
+    {"No": "319", "question_text": "In a 5-variable K-map, the number of cells is", "MCQ Answer": "D", "option A": "16", "option B": "25", "option C": "30", "option D": "32"},
+    {"No": "320", "question_text": "Which property allows us to eliminate the common term when grouping in K-maps?", "MCQ Answer": "C", "option A": "Commutative law", "option B": "Idempotent law", "option C": "Consensus law", "option D": "Distributive law"},
+    {"No": "321", "question_text": "The minimum number of two-input NAND gates required to implement a two-input OR gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "322", "question_text": "The minimum number of two-input NOR gates required to implement a two-input AND gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "324", "question_text": "Which is an example of an illegal state in a J-K flip-flop?", "MCQ Answer": "D", "option A": "J = 0, K = 0", "option B": "J = 0, K = 1", "option C": "J = 1, K = 0", "option D": "J = 1, K = 1"},
+    {"No": "327", "question_text": "The minimum number of flip-flops required to construct a MOD-8 counter is", "MCQ Answer": "A", "option A": "3", "option B": "4", "option C": "8", "option D": "2"},
+    {"No": "328", "question_text": "The characteristic equation of a D flip-flop is", "MCQ Answer": "C", "option A": "Q(n+1) = D'Q(n) + DQ(n)'", "option B": "Q(n+1) = D'Q(n)' + DQ(n)", "option C": "Q(n+1) = D", "option D": "Q(n+1) = D'"},
+// ===================================
+// === QUESTIONS FROM MODDE.PDF - DIGITAL ELECTRONICS (Q. 262, 273, 277-279, 282-285, 303, 306-309, 311-312, 315-322, 324, 327-328) ===
+
+    {"No": "262", "question_text": "Which register is capable of performing both left and right shift operations?", "MCQ Answer": "C", "option A": "Parallel-in, Parallel-out", "option B": "Serial-in, Serial-out", "option C": "Bidirectional shift register", "option D": "Universal shift register"},
+    {"No": "273", "question_text": "A counter in which all the flip-flops are connected in a series is called a/an", "MCQ Answer": "A", "option A": "Ripple counter", "option B": "Synchronous counter", "option C": "Decade counter", "option D": "Ring counter"},
+    {"No": "277", "question_text": "In a ripple counter, the clock is applied to the", "MCQ Answer": "B", "option A": "First flip-flop only", "option B": "All flip-flops simultaneously", "option C": "Second flip-flop only", "option D": "Last flip-flop only"},
+    {"No": "278", "question_text": "Which counter has the fastest operation?", "MCQ Answer": "B", "option A": "Ripple counter", "option B": "Synchronous counter", "option C": "Asynchronous counter", "option D": "Twisted ring counter"},
+    {"No": "279", "question_text": "A MOD-10 counter is also known as a", "MCQ Answer": "C", "option A": "Binary counter", "option B": "Up counter", "option C": "Decade counter", "option D": "Ring counter"},
+    {"No": "282", "question_text": "Which memory element is used in the shift register?", "MCQ Answer": "D", "option A": "SR flip-flop", "option B": "NOR gate", "option C": "OR gate", "option D": "D flip-flop"},
+    {"No": "283", "question_text": "The minimum number of flip-flops required to construct a MOD-10 counter is", "MCQ Answer": "B", "option A": "3", "option B": "4", "option C": "5", "option D": "10"},
+    {"No": "284", "question_text": "The maximum number of states in an n-bit counter is", "MCQ Answer": "C", "option A": "n", "option B": "n²", "option C": "2^n", "option D": "2n"},
+    {"No": "285", "question_text": "Which counter is also known as a full-modulus counter?", "MCQ Answer": "D", "option A": "Ring counter", "option B": "Decade counter", "option C": "Ripple counter", "option D": "Binary counter"},
+    {"No": "303", "question_text": "The minimum number of two-input NAND gates required to implement a two-input XOR gate is", "MCQ Answer": "C", "option A": "2", "option B": "5", "option C": "4", "option D": "3"},
+    {"No": "306", "question_text": "In a 3-variable K-map, the number of cells is", "MCQ Answer": "B", "option A": "6", "option B": "8", "option C": "9", "option D": "4"},
+    {"No": "307", "question_text": "In a 4-variable K-map, the number of cells is", "MCQ Answer": "D", "option A": "12", "option B": "8", "option C": "9", "option D": "16"},
+    {"No": "308", "question_text": "In K-map, groups can be formed in", "MCQ Answer": "A", "option A": "2, 4, 8, 16", "option B": "2, 3, 4, 5", "option C": "3, 5, 7", "option D": "2, 4, 6, 8"},
+    {"No": "309", "question_text": "In K-map, the group formed by eight adjacent cells is called a/an", "MCQ Answer": "C", "option A": "Pair", "option B": "Quad", "option C": "Octet", "option D": "Duo"},
+    {"No": "311", "question_text": "Which method is used for simplifying Boolean expressions?", "MCQ Answer": "D", "option A": "Boolean algebra", "option B": "K-map", "option C": "Quine McClusky method", "option D": "All of the above"},
+    {"No": "312", "question_text": "An inverter performs a/an", "MCQ Answer": "A", "option A": "Complementation operation", "option B": "Addition operation", "option C": "Multiplication operation", "option D": "Subtraction operation"},
+    {"No": "315", "question_text": "Which statement is correct for a K-map?", "MCQ Answer": "A", "option A": "Adjacent cells differ by only one variable", "option B": "Adjacent cells differ by two or more variables", "option C": "Groups can be formed only vertically", "option D": "Groups can be formed only horizontally"},
+    {"No": "316", "question_text": "Choose correct statement's from following: i) an inverter performs complementation operation ii) process performed by inverter is known as inversion iii) an inverter contains two or more input terminal and one output terminal.", "MCQ Answer": "A", "option A": "Only I & II", "option B": "Only I & III", "option C": "Only II & III", "option D": "All of the above"},
+    {"No": "317", "question_text": "If the boolean expression PQ + QR + PR is minimized, the expression becomes", "MCQ Answer": "B", "option A": "PQ + QR", "option B": "PQ + PR", "option C": "QR + PR", "option D": "P'Q + QR + PR"},
+    {"No": "318", "question_text": "A + AB = A (A + B) = A represents which law?", "MCQ Answer": "B", "option A": "Commutative", "option B": "Absorption", "option C": "Consensus", "option D": "Transposition"},
+    {"No": "319", "question_text": "In a 5-variable K-map, the number of cells is", "MCQ Answer": "D", "option A": "16", "option B": "25", "option C": "30", "option D": "32"},
+    {"No": "320", "question_text": "Which property allows us to eliminate the common term when grouping in K-maps?", "MCQ Answer": "C", "option A": "Commutative law", "option B": "Idempotent law", "option C": "Consensus law", "option D": "Distributive law"},
+    {"No": "321", "question_text": "The minimum number of two-input NAND gates required to implement a two-input OR gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "322", "question_text": "The minimum number of two-input NOR gates required to implement a two-input AND gate is", "MCQ Answer": "C", "option A": "2", "option B": "4", "option C": "3", "option D": "5"},
+    {"No": "324", "question_text": "Which is an example of an illegal state in a J-K flip-flop?", "MCQ Answer": "D", "option A": "J = 0, K = 0", "option B": "J = 0, K = 1", "option C": "J = 1, K = 0", "option D": "J = 1, K = 1"},
+    {"No": "327", "question_text": "The minimum number of flip-flops required to construct a MOD-8 counter is", "MCQ Answer": "A", "option A": "3", "option B": "4", "option C": "8", "option D": "2"},
+    {"No": "328", "question_text": "The characteristic equation of a D flip-flop is", "MCQ Answer": "C", "option A": "Q(n+1) = D'Q(n) + DQ(n)'", "option B": "Q(n+1) = D'Q(n)' + DQ(n)", "option C": "Q(n+1) = D", "option D": "Q(n+1) = D'"}
+// ===================================
+];
+questions.sort((a, b) => parseInt(a.No) - parseInt(b.No));
+
+        let currentScreen = 'loader';
+        let currentTestIndex = 0;
+        let score = 0;
+        
+        const screens = {
+            'loader': document.getElementById('loader'),
+            'menu': document.getElementById('menu-screen'),
+            'view-mode': document.getElementById('view-mode-screen'),
+            'test-mode': document.getElementById('test-mode-screen')
+        };
+
+        // --- Core Functions ---
+        function showScreen(screenId) {
+            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+            screens[screenId].classList.remove('hidden');
+            currentScreen = screenId;
+
+            if (screenId === 'view-mode') {
+                initViewMode();
+            } else if (screenId === 'test-mode') {
+                startTest();
+            }
+        }
+        
+        function escapeHTML(str) {
+            if (!str) return "";
+            const p = document.createElement("p");
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        // --- View Mode ---
+        function initViewMode() {
+            const container = document.getElementById('view-questions-container');
+            container.innerHTML = '';
+            questions.forEach(q => {
+                const correctAnswer = q["MCQ Answer"];
+                const optionsHTML = ['A', 'B', 'C', 'D'].map(opt => {
+                    const optionText = q[`option ${opt}`];
+                    if (!optionText) return '';
+                    const isCorrect = opt === correctAnswer;
+                    return `<div class="p-3 rounded-lg ${isCorrect ? 'bg-green-100 border-l-4 border-green-500 font-semibold' : 'bg-slate-100'}">
+                                <strong>${opt}.</strong> ${escapeHTML(optionText)}
+                            </div>`;
+                }).join('');
+
+                const questionCard = `
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h3 class="font-semibold text-lg mb-4">Q${q.No}: ${escapeHTML(q.question_text)}</h3>
+                        <div class="space-y-3">${optionsHTML}</div>
+                    </div>
+                `;
+                container.innerHTML += questionCard;
+            });
+        }
+
+        // --- Test Mode ---
+        function startTest() {
+            currentTestIndex = 0;
+            score = 0;
+            document.getElementById('test-card').classList.remove('hidden');
+            document.getElementById('test-results').classList.add('hidden');
+            loadTestQuestion();
+        }
+
+        function loadTestQuestion() {
+            if (currentTestIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const q = questions[currentTestIndex];
+            const testCard = document.getElementById('test-card');
+            const progress = ((currentTestIndex + 1) / questions.length) * 100;
+
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `Question ${currentTestIndex + 1}/${questions.length}`;
+
+            const optionsHTML = ['A', 'B', 'C', 'D'].map(opt => {
+                const optionText = q[`option ${opt}`];
+                if (!optionText) return '';
+                return `<button class="option-btn text-left w-full p-4 font-medium rounded-lg" onclick="selectAnswer(this, '${opt}', '${q['MCQ Answer']}')">
+                            <strong>${opt}.</strong> ${escapeHTML(optionText)}
+                        </button>`;
+            }).join('');
+
+            testCard.innerHTML = `
+                <p class="text-xl font-medium text-slate-800 mb-6">${escapeHTML(q.question_text)}</p>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    ${optionsHTML}
+                </div>
+                <div class="mt-8 text-right">
+                     <button id="next-btn" onclick="nextQuestion()" class="btn bg-blue-600 text-white font-bold py-2 px-8 rounded-lg hidden">Next</button>
+                </div>
+            `;
+        }
+        
+        function selectAnswer(btn, selectedOpt, correctOpt) {
+            const optionsContainer = document.getElementById('options-container');
+            const allOptions = optionsContainer.querySelectorAll('button');
+
+            allOptions.forEach(optBtn => {
+                optBtn.disabled = true;
+                const optionLetter = optBtn.textContent.trim().split('.')[0];
+                if (optionLetter === correctOpt) {
+                    optBtn.classList.add('correct');
+                }
+            });
+
+            if (selectedOpt === correctOpt) {
+                score++;
+            } else {
+                btn.classList.add('incorrect');
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentTestIndex++;
+            loadTestQuestion();
+        }
+
+        function showResults() {
+             document.getElementById('test-card').classList.add('hidden');
+             const resultsContainer = document.getElementById('test-results');
+             resultsContainer.classList.remove('hidden');
+             document.getElementById('score-text').textContent = `${score}/${questions.length}`;
+             document.getElementById('progress-bar').style.width = '100%';
+             document.getElementById('progress-text').textContent = `Test Complete!`;
+        }
+
+        // --- Initial Load ---
+        window.onload = () => {
+            setTimeout(() => {
+                screens.loader.style.opacity = '0';
+                setTimeout(() => showScreen('menu'), 500); // Show menu after fade out
+            }, 1500); // Show loader for 1.5 seconds
+        };
+    </script>
+</body>
+</html>
+
+
+
