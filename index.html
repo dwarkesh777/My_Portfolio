@@ -9,7 +9,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    
+    <script src="https://unpkg.com/lucide@latest"></script>
+<script id="omnidimension-web-widget" async src="https://omnidim.io/web_widget.js?secret_key=68da15de7766a292c4b84f0412f70d7d" ></script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.createElement('canvas');
             canvas.width = 64;
@@ -411,18 +413,7 @@
                         <i data-lucide="car" class="w-16 h-16 text-red-500 opacity-50 group-hover:scale-110 transition-transform duration-500"></i>
                         <div class="absolute top-4 right-4 bg-black/30 backdrop-blur px-2 py-1 rounded text-xs font-bold border border-white/10">Web Game</div>
                     </div>
-                    <div class="p-8">
-                        <h3 class="text-xl font-bold text-white mb-2">Car Game</h3>
-                        <p class="text-gray-400 text-sm mb-6 h-12">A physics-based browser car game designed for fun and testing WebGL performance.</p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-red-500/10 text-red-500 px-2 py-1 rounded">HTML5</span>
-                            <span class="text-xs bg-red-500/10 text-red-500 px-2 py-1 rounded">WebGL</span>
-                            <span class="text-xs bg-red-500/10 text-red-500 px-2 py-1 rounded">Game</span>
-                        </div>
-                        <a href="cargame.html" class="w-full py-3 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white border border-transparent rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-900/20">
-                            Play Now <i data-lucide="play-circle" class="w-4 h-4"></i>
-                        </a>
-                    </div>
+
                 </div>
 
             </div>
@@ -462,10 +453,6 @@
             </div>
         </div>
     </section>
-
-    <footer class="py-6 text-center text-gray-500 text-sm border-t border-white/5 bg-dark">
-        <p> Dwarkesh S. Savaliya </p>
-    </footer>
 
     <div id="popup-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-surface border border-white/10 p-8 rounded-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300" id="popup-content">
